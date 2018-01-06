@@ -2,33 +2,16 @@
   <div>
     <top></top>
     <section class="body">
-      <header class="nav">
-        <ul>
-          <li class="hover" @click="$router.push(`/index`)">
-            {{nav.item1}}
-          </li>
-          <li class="hover" @click="$router.push(`/list/childs`)">
-            {{nav.item2}}
-          </li>
-          <li class="nav-logo"></li>
-          <li class="item hover" @click="$router.push(`/list/men`)">
-            {{nav.item3}}
-          </li>
-          <li class="item hover" @click="$router.push(`/list/women`)">
-            {{nav.item4}}
-          </li>
-          <li class="nav-search" @click="goCar"><img src="/static/images/cart.png"></li>
-        </ul>
-      </header>
+      <nav-bar></nav-bar>
       <Hbanner :mylist="Ibanner"></Hbanner>
       <section class="city-style">
         <ul>
-          <li v-for="list in city" :key="list.city">
-            <div class="city-content">
-              <img :src="list.img">
+          <li v-for="list in city" :key="list.img">
+            <div class="city-content" style="cursor:pointer" @click="$router.push(`/index/detail/${list._id}`)">
+              <img :src="list.imgs[0]">
               <div class="city-contain">
-                <p class="product-title">{{list.title}}</p>
-                <p class="product-des">{{list.descript}}</p>
+                <p class="product-title">{{list.name}}</p>
+                <p class="product-price" ref="pay">￥{{(list.price/100).toFixed(2)}}</p>
               </div>
             </div>
           </li>
@@ -40,13 +23,13 @@
           <p class="head-like"> {{like}}</p>
         </div>
       </section>
-      <capbanner :list="cap"></capbanner>
+      <capbanner :list="mancap"></capbanner>
       <center></center>
       <section class="hot-sale">
         <p class="head-title">{{hotsale}}</p>
         <p class="head-like">{{like}}</p>
       </section>
-      <capbanner :list="cap"></capbanner>
+      <capbanner :list="womencap"></capbanner>
     </section>
     <section class="footer-banner">
       <img src="/static/images/footer-banner.jpg">
@@ -59,11 +42,14 @@
 //引入组件文件(components)
 import top from "@/components/top";
 import bottom from "@/components/footer";
+import navBar from "@/components/nav";
 import Hbanner from "@/components/index-banner";
 import capbanner from "@/components/capBanner";
 import center from "@/components/center-content";
 
-//模拟api（假数据）
+//api
+import { heightBanner, getcap, getNewproduct } from "@/api/index.js";
+
 export default {
   data() {
     return {
@@ -77,36 +63,36 @@ export default {
       headtitle: "新品首发",
       like: "春 & 夏 2 0 1 8 典 藏",
       hotsale: "热销尖货",
-      cap: [],
-      city: [
-        {
-          img: "/static/images/2.png",
-          title: "密尔沃基雄鹿队城市系列",
-          descript: "59FIFTY FITTED"
-        },
-        {
-          img: "/static/images/2.png",
-          title: "密尔沃基雄鹿队城市系列",
-          descript: "59FIFTY FITTED"
-        },
-        {
-          img: "/static/images/2.png",
-          title: "密尔沃基雄鹿队城市系列",
-          descript: "59FIFTY FITTED"
-        }
-      ],
+      mancap: [],
+      womencap: [],
+      city: [],
       detail: [],
-      screen: false
+      screen: false,
+      price: ""
     };
   },
   components: {
     top,
     bottom,
+    navBar,
     Hbanner,
     capbanner,
     center
   },
-  mounted() {
+
+  created() {
+    heightBanner().then(response => {
+      this.Ibanner = response.data;
+    });
+    getcap("男士帽").then(response => {
+      this.mancap = response.data;
+    });
+    getcap("女士帽").then(response => {
+      this.womencap = response.data;
+    });
+    getNewproduct().then(res => {
+      this.city = res.data;
+    });
   },
   methods: {
     search: function() {
@@ -114,14 +100,6 @@ export default {
     },
     submit: function() {
       return;
-    },
-    goCar() {
-      if (!sessionStorage.name) {
-        this.$Message.error('请先登录');
-        this.$store.dispatch("changeLogin", true);
-      } else {
-        this.$router.push("/cart");
-      }
     }
   }
 };
@@ -171,12 +149,15 @@ a {
 .hover:hover {
   border-bottom: 2px solid black;
 }
-.nav-search {
-  margin-top: 5px;
+.nav-search,
+.cart {
+  flex-grow: 0.03 !important;
+  cursor: pointer;
 }
 .nav-search img {
-  width: 18px;
-  height: 18px;
+  margin-right: 10px;
+  width: 25px;
+  height: 25px;
 }
 .search-input {
   width: 0;
@@ -244,27 +225,36 @@ a {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  overflow: hidden;
 }
 .city-content img {
-  width: 40%;
-  height: 150px;
+  width: 55%;
 }
 .city-contain {
   font-family: "微软雅黑";
   width: 55%;
+  height: 150px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: center;
   text-align: left;
 }
 .product-title {
-  font-size: 16px;
+  width: 100%;
+  font-size: 12px;
+  font-weight: bold;
+  color: black;
+  text-align: left;
 }
-.product-des {
-  font-size: 14px !important;
-  /*display: block;*/
-  color: rgb(107, 107, 107);
+.product-price {
+  width: 100%;
+  margin-top: 20px;
+  text-align: left;
+  font-size: 13px;
+  color: grey;
 }
+
 .headline {
   width: 40%;
   height: 150px;

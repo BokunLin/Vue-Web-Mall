@@ -17,7 +17,6 @@ service.interceptors.response.use(
 		if (res.code === 5005) {
 			sessionStorage.clear();
 			store.dispatch('changeLogin', true);
-			Message.error('请先登录');
 			return Promise.reject(res)
 		} else if (res.code !== 2000) {
 			return Promise.reject(res)

@@ -31,9 +31,19 @@ const router = new Router({
       component:cart
     },
     {
-      path:'/list/:name',
-      name:"list",
-      component:productlist
+      path: '/childs',
+      name: 'childs',
+      component: productlist
+    },
+    {
+      path: '/men',
+      name: 'men',
+      component: productlist
+    },
+    {
+      path: '/women',
+      name: 'women',
+      component: productlist
     },
     {
       path:'/order',

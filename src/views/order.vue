@@ -25,7 +25,6 @@
 import top from "@/components/top";
 import Inav from "@/components/nav";
 import bottom from "@/components/footer";
-import expandRow from "@/components/expand-row";
 import Itable from "@/components/order-table";
 
 export default {
@@ -49,7 +48,6 @@ export default {
     top,
     Inav,
     bottom,
-    expandRow,
     Itable
   }
 };
@@ -58,15 +56,16 @@ export default {
 <style scoped>
 .container {
   background-color: #fafafa;
+  padding: 10px;
 }
 .content {
-  width: 1407px;
+  width: 1190px;
   margin: 0 auto;
   background-color: #fff;
 }
 .backtop {
   height: 100px;
-  width: 1407px;
+  width: 1190px;
   margin: 0 auto;
   display: flex;
   flex-direction: row;
@@ -83,7 +82,7 @@ export default {
   font-size: 16px;
 }
 .return {
-  width: 1407px;
+  width: 1190px;
   height: 50px;
   margin: 0 auto;
   display: flex;

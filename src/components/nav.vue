@@ -1,110 +1,99 @@
 <template>
   <div>
     <section class="nav">
-      <ul>
-        <li class="logo" @click="$router.push('/index')"><img :src="setting.img"></li>
-        <li class="hover">
-          <router-link to="/index" tag="a">{{setting.index}}</router-link>
-        </li>
-        <li class="hover">
-          <router-link to="/list/childs" tag="a">{{setting.childs}}</router-link>
-        </li>
-        <li class="hover">
-          <router-link to="/list/men" tag="a">{{setting.men}}</router-link>
-        </li>
-        <li class="hover">
-          <router-link to="/list/women" tag="a">{{setting.women}}</router-link>
-        </li>
-        <li class="icon">
-          <div class="cart"><img :src="setting.cart" alt="" @click="goCar"></div>
-        </li>
-      </ul>
+      <Row type="flex" class="row">
+        <Col :span="6">
+        <img @click="$router.push('/index')" :src="setting.img" class="logo" style="cursor: pointer;">
+        </Col>
+        <Col push="4" class="col" :span="9">
+        <ul class="navList" mode="horizontal">
+          <li @click="jumpPage('index')" :class="['navItem', {'active': active === 'index'}]">首页</li>
+          <li @click="jumpPage('childs')" :class="['navItem', {'active': active === 'childs'}]">儿童帽</li>
+          <li @click="jumpPage('men')" :class="['navItem', {'active': active === 'men'}]">男士帽</li>
+          <li @click="jumpPage('women')" :class="['navItem', {'active': active === 'women'}]">女士帽</li>
+        </ul>
+        </Col>
+        <Col push="8" :span="1" class="car">
+          <Icon type="ios-cart" @click.native="goCar"></Icon>
+        </Col>
+      </Row>
     </section>
   </div>
 </template>
 
 <script>
-export default{
+export default {
   data() {
-    return{
-       setting:{
-        img   :"/static/images/title.png",
-        index :"首页",
-        childs:"儿童帽",
-        men   :"男士帽",
-        women :"女士帽",
-        search:"/static/images/search.png",
-        cart  :"/static/images/cart.png"
-       }
-    }
+    return {
+      active: "index",
+      setting: {
+        img: "/static/images/logo.png",
+        index: "首页",
+        childs: "儿童帽",
+        men: "男士帽",
+        women: "女士帽",
+        search: "/static/images/search.png",
+        cart: "/static/images/cart.png"
+      }
+    };
+  },
+  created() {
+    this.active = this.$route.name;
   },
   methods: {
     goCar() {
       if (!sessionStorage.name) {
-        this.$Message.error('请先登录');
-        this.$store.dispatch('changeLogin', true);
+        this.$Message.error("请先登录");
+        this.$store.dispatch("changeLogin", true);
       } else {
-        this.$router.push('/cart')
+        this.$router.push("/cart");
       }
+    },
+    jumpPage(name) {
+      this.active = name;
+      this.$router.push("/" + name);
     }
   }
-}
+};
 </script>
 
 <style scoped>
 .nav {
-  width: 100%;
+  background-color: #fff;
+}
+.row {
+  width: 1200px;
+  margin: 0 auto;
+  padding: 10px 0;
   height: 80px;
-  border-bottom: 1px solid #aaa;
+  overflow: hidden;
 }
-.nav ul {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
+.navList {
+  height: 60px;
 }
-.nav ul li {
-  /*height: 50%;*/
-  flex-grow: 0.05;
-  text-align: center;
-  font-family: "微软雅黑";
-  font-size: 17px;
-  color: black;
-  border-bottom: 2px solid transparent;
-  /*padding-bottom: 10px;*/
+.navList li {
+  line-height: 40px;
+  padding: 0px 20px;
   cursor: pointer;
+  margin: 10px 10px;
+  font-size: 16px;
+  transition: all 0.2s;
+  float: left;
+  color: #333;
+}
+.navList li:hover,
+.navList .active {
+  border-bottom: 2px solid #333;
+}
+.car {
+  line-height: 60px;
+  font-size: 20px;
+  cursor: pointer;
+  float: right;
+  margin-left: 10px;
 }
 .logo {
-  flex-grow: 0.4 !important;
-}
-.icon {
-  flex-grow: 0.3 !important;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-.arrow {
-  background: url(/static/images/detail-arrow.png) no-repeat;
-  -webkit-background-size: contain;
-  background-size: contain;
-  width: 15px;
-  height: 15px;
-  display: block;
-}
-a {
-  color: black;
-}
-.hover:hover {
-  border-bottom: 2px solid black;
-}
-.hover a {
-  width: 100%;
-  height: 100%;
-}
-.search {
-  flex-grow: 0.1;
+  width: auto;
+  height: 40px;
 }
 </style>

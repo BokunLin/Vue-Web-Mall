@@ -73,7 +73,7 @@ export default {
   methods: {
     initData(page = 1) {
       let tags = "男士帽";
-      switch (this.$route.params.name) {
+      switch (this.$route.name) {
         case "women":
           tags = "女士帽";
           break;
@@ -97,7 +97,6 @@ export default {
       product.sort = prod.sort;
 
       this.$store.commit("addcart", product);
-      console.log(this.$store.state.cart);
     }
   }
 };

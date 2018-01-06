@@ -1,9 +1,9 @@
 <template>
   <div>
      <Carousel autoplay v-model="value2" loop :auto-speed="2500" :radius-dot="true">
-        <CarouselItem v-for = "item in mylist" :key="item.mylist"  class="container">
+        <CarouselItem v-for = "item in mylist" :key="item.banner"  class="container">
             <div class="demo-carousel">
-              <img :src="item.img">
+              <img :src="item.banner">
             </div>
         </CarouselItem>
     </Carousel>
@@ -12,7 +12,6 @@
 
 <script>
 export  default{
-
     data(){
       return{
         value2:0
@@ -27,10 +26,6 @@ export  default{
 </script>
 
 <style scoped>
- *{
-  margin: 0;
-  padding: 0;
- }
   .container div{
     width: 100%;
     height: 800px;

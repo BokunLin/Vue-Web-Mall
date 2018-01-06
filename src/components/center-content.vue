@@ -1,28 +1,30 @@
 <template>
   <div class="container">
     <Row type="flex" justify="center" :gutter="20">
-        <Col>
+        <Col :span="6">
           <ul class="left-section">
-            <li v-for = "(item, index) in series" :key="index">
+            <li v-for = "(item, index) in groudone" :key="index">
               <img :src="item.img">
-              <div class="mes">
-                <p class="title">{{item.title}}</p>
-                <p class="descript">{{item.descript}}</p>
+              <div class="mes" style="display:none">
+                <p>{{item.title}}</p>
+                <p>{{item.descript}}</p>
               </div>
+              <div class="mask" style="display:none"></div>
             </li>
           </ul>
         </Col>
         <Col class-name="middle">
           <img src="/static/images/center-adver.png">
         </Col>
-        <Col>
+        <Col :span="6">
           <ul class="left-section">
-            <li v-for = "(item, index) in series" :key="index">
+            <li v-for = "(item, index) in groudtwo" :key="index">
               <img :src="item.img">
-              <div class="mes">
-                <p class="title">{{item.title}}</p>
-                <p class="descript">{{item.descript}}</p>
+              <div class="mes" style="display:none">
+                <p>{{item.title}}</p>
+                <p>{{item.descript}}</p>
               </div>
+              <div class="mask" style="display:none"></div>
             </li>
           </ul>
         </Col>
@@ -34,18 +36,39 @@
   export default {
     data(){
       return{
-        series:[
+        groudone:[
           {
-            img:"/static/images/1.png",
-            title:"运动系列",
-            descript:"永远保持真我"
+            img:"/static/images/9.jpg",
+            title:"EK 系列",
+            descript:"EK series"
           },
            {
-            img:"/static/images/1.png",
-            title:"运动系列",
-            descript:"永远保持真我"
+            img:"/static/images/6.jpg",
+            title:"假日系列",
+            descript:"Holiday series"
           }
-        ]
+        ],
+        groudtwo:[
+          {
+            img:'/static/images/5.jpg',
+            title:'城市系列',
+            descript:'city series'
+          },
+          {
+            img:'/static/images/7.jpg',
+            title:"娱乐系列",
+            descript:"Entertainment"
+          }
+        ],
+        istrue:''
+      }
+    },
+    methods:{
+      leftEnter(){
+        this.istrue = 'left'; 
+      },
+      rightEnter(){
+        this.istrue = 'right';
       }
     }
   } 
@@ -54,6 +77,12 @@
 <style scoped>
   .container {
     overflow: hidden;
+    width: 1200px;
+    margin: 0 auto;
+  }
+  *{
+    padding: 0;
+    margin:0;
   }
   .left-seciton{
     width: 100%;
@@ -63,17 +92,12 @@
     align-items: center;
   }
   .left-section li{
-    width: 350px;
-    height: 300px;
     position: relative;
-    margin-bottom: 20px;
-
+    margin-bottom: 34px;
+    height: 283px;
   } 
-  .left-section li img{
-    width: 100%;
-    height: 100%;
-  }
-  .mes{
+   .left-section li:hover .mes{
+    display: block !important;
     width: 100%;
     height: 50px;
     margin:auto;
@@ -88,12 +112,23 @@
     font-size: 18px;
     font-weight: bold;
   }
+  .left-section li:hover .mask{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: block !important;
+    top: 0;
+    left: 0;
+    background-color:rgba(120,120,120,.4);
+  }
+  .left-section li img{
+    width: 100%;
+    height: 100%;
+  }
   .middle {
-    width: 389px;
-    height: 620px;
+    height: 600px;
   }
   .middle img {
-    width: 100%;
     height: 100%;
   }
 </style>

@@ -19,4 +19,7 @@ export default {
   input {
     outline: none;
   }
+  .ivu-carousel-arrow.right {
+    text-align: center;
+  }
 </style>

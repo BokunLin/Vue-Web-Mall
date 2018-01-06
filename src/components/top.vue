@@ -1,4 +1,5 @@
 <template>
+	<div style="background-color:#fff;">
 	<div class="top">
 		<Row justify="center">
 			<Col span="8">欢迎来到1995,开始你的购物之旅把！</Col>
@@ -49,6 +50,7 @@
 			</Form>
 		</Modal>
 	</div>
+	</div>
 </template>
 <script>
 import { login, signup, loginOut } from '@/api/index'
@@ -79,7 +81,7 @@ export default {
 			if (!sessionStorage.name) {
 				this.$sotre.dispatch('changeLogin', true);
 			} else {
-				$router.push('/order')
+				this.$router.push('/order')
 			}
 		},
 		loginOut() {
@@ -94,6 +96,7 @@ export default {
 				_this.$Message.success(res.msg);
 				_this.nick = sessionStorage.name = res.data.name;
 				_this.$store.state.isLogin = false;
+				location.reload();
 			}).catch(err => {
 				_this.$Message.error(err.msg);
 			})
@@ -113,7 +116,7 @@ export default {
 
 <style>
 .top {
-  width: 1200px;
+  width: 1190px;
   margin: 0 auto;
   line-height: 30px;
   height: 30px;

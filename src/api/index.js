@@ -25,9 +25,37 @@ export function login({
 export function loginOut() {
   return axios.get('/api/login');
 }
+//帽子轮播
+export function getcap(tags) {
+  return axios.get('/api/getListByName', {
+    params: {
+      tags
+    }
+  });
+}
+//主页banner
+export function heightBanner() {
+  return axios.get('/api/banner');
+}
+//详情页传id
+export function postID(id) {
+  return axios.post('/api/Product', {
+    params: {
+      id
+    }
+  })
+}
+//购物车传数据
+export function add(id, count = 1) {
+  return axios.post('/api/cart', {
+    id,
+    count
+  })
+}
 
-export function test() {
-  return axios.get('/api/getNewProducts')
+//获取主页中间三个
+export function getNewproduct() {
+  return axios.get('/api/getNewProducts');
 }
 
 export function getListByTag({
@@ -132,14 +160,41 @@ export function getProduct(id) {
   })
 }
 
-export function getCar(){
+export function getCar() {
   return axios.get('/api/getCar');
 }
 
 export function addToCar(product, count = 1) {
-  return axios.post('/api/addToCar', { product, count })
+  return axios.post('/api/addToCar', {
+    product,
+    count
+  })
 }
 
 export function removeCar(id) {
-  return axios.get('/api/removeCar', { params: { id } })
+  return axios.get('/api/removeCar', {
+    params: {
+      id
+    }
+  })
+}
+
+export function subOrder({ snapShoot, address }) {
+  return axios.post('/api/order', { snapShoot, address })
+}
+
+export function getOrder() {
+  return axios.get('/api/order');
+}
+
+export function getSnapShoot(id) {
+  return axios.get('/api/snapShoot', { params: { id } })
+}
+
+export function changeOrderState(id) {
+  return axios.post('/api/order/confirm', { id })
+}
+
+export function removeOrder(id) {
+  return axios.post('/api/order/remove', { id })
 }

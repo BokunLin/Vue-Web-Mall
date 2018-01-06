@@ -1,19 +1,20 @@
 <template>
-	<div>
-		<Carousel v-model="value3" :autoplay="setting.autoplay" :autoplay-speed="setting.autoplaySpeed" :dots="setting.dots" :radius-dot="setting.radiusDot" :trigger="setting.trigger" :arrow="setting.arrow" class="capbanner">
-			<CarouselItem v-for="(item, index) in myArr" :key="index" class="product-container">
-				<ul>
-					<li class="demo-carousel product-banner" v-for="list in item" :key="list.item" @click="addTo(list)">
-						<router-link :to="{ name:'detail', params:{id:list._id}}">
-							<img :src="list.img">
-							<p class="title">{{list.title}}</p>
-							<p class="price">{{list.price}}</p>
-						</router-link>
-					</li>
-				</ul>
-			</CarouselItem>
-		</Carousel>
-	</div>
+  <div>
+    <Carousel v-model="value3" :autoplay="setting.autoplay" :autoplay-speed="setting.autoplaySpeed" :dots="setting.dots" :radius-dot="setting.radiusDot" :trigger="setting.trigger" :arrow="setting.arrow" class="capbanner">
+      <CarouselItem v-for="(item, index) in myArr" :key="index" class="product-container">
+        <ul>
+          <li class="demo-carousel product-banner" v-for="list in item" :key="list.item">
+            <router-link :to="{ name:'detail', params:{id:list._id}}">
+              <img :src="list.imgs[0]">
+              <p class="title">{{list.name}}</p>
+              <p class="price">￥{{(list.price/100).toFixed(2)}}</p>
+            </router-link>
+          </li>
+        </ul>
+      </CarouselItem>
+    </Carousel>
+    }
+  </div>
 </template>
 
 <script>
@@ -30,23 +31,11 @@ export default {
         radiusDot: true,
         trigger: "click",
         arrow: "hover"
-      }
+      },
+      price: ""
     };
   },
-  methods: {
-    addTo(prod) {
-      let goods = {};
-
-      goods._id = prod._id;
-      goods.img = prod.img;
-      goods.title = prod.title;
-      goods.price = prod.price;
-      goods.descript = prod.descript;
-
-      this.$store.commit("getproduct", goods);
-      console.log(this.$store.state.cart);
-    }
-  },
+  methods: {},
 
   watch: {
     list(val) {
@@ -56,13 +45,10 @@ export default {
         const tempArr = [];
         for (let j = 0; j <= 3; j++) {
           tempArr.push(val[i * j]);
-          // console.log(j);
         }
         newArr.push(tempArr);
-        // console.log('newArr', newArr);
       }
       this.myArr = newArr;
-      // console.log(this.myArr);
     }
   },
   props: ["list"]
@@ -70,15 +56,12 @@ export default {
 </script>
 
 <style scoped>
-* {
-  margin: 0;
-  padding: 0;
-}
 .capbanner {
   padding-bottom: 5%;
 }
 .product-container {
   width: 100%;
+  text-align: center;
 }
 .product-container ul {
   width: 80%;
@@ -90,14 +73,14 @@ export default {
 }
 .product-banner {
   width: 23.5%;
-  height: 100%;
+  height: 450px;
 }
 .product-banner img {
-  width: 100%;
+  height: 281px;
 }
 .title {
   font-family: "微软雅黑";
-  font-size: 17px;
+  font-size: 13px;
   color: grey;
   margin: 5px;
 }

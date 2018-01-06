@@ -28,6 +28,7 @@
 					</div>
 					</Col>
 				</Row>
+				<p><Button type="success" @click="$router.go(-1)" style="margin-top: 15px;">返回上一步</Button></p>
 			</div>
 		</div>
 		<bottom></bottom>
@@ -135,11 +136,9 @@ export default {
 			getAddress().then(data => {
 				this.addressList = data.data.map(item => {
 					item.address.forEach((el, index) => {
-						console.log('el', el)
 						switch (index) {
 						case 0:
 							getProvincesLabel(el).then(res => {
-								console.log('res', res)
 								item.address = res.data.label
 							})
 							break;
@@ -160,7 +159,6 @@ export default {
 							break;
 						}
 					})
-					console.log('item', item)
 					return item;
 				});
 			})

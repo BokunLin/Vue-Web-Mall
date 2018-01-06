@@ -73,7 +73,6 @@ export	default{
 		created() {
 			getcap().then(response => {
 				this.getcapbanner = response.data;
-				// console.log(this.getcapbanner);
 			}); 
 			heightBanner().then(response => {
 				this.banner = response.data;
