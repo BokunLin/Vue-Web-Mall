@@ -183,7 +183,7 @@ export default {
   width: 90%;
 }
 </style>
-<style>
+<style scoped>
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s
 }

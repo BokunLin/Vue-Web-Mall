@@ -114,7 +114,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .top {
   width: 1190px;
   margin: 0 auto;
@@ -154,12 +154,15 @@ export default {
 .loginModal .ivu-modal-content {
   padding: 45px 0;
 }
-.loginModal .ivu-modal-header,
-.loginModal .ivu-modal-footer {
-  border: none;
-}
 .loginModal .ivu-input {
   border-radius: 0;
   font-size: 16px;
 }
 </style>
+<style>
+.loginModal .ivu-modal-header,
+.loginModal .ivu-modal-footer {
+  border: none;
+}
+</style>
+

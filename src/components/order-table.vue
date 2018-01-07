@@ -16,8 +16,7 @@
         <h2 style="margin: 45px 0 0;line-height: 1; width: 70%;">{{product.name}}</h2>
         <p style="line-height: 35px;">尺码： 均码</p>
         </Col>
-        <Col :span="3" class="textCenter"> {{product.price}}
-        </Col>
+        <Col :span="3" class="textCenter">{{product.price | money}}</Col>
         <Col :span="3" class="textCenter">{{product.count}}</Col>
         <Col :span="3" class="textCenter borderR">{{product | total}}</Col>
       </div>
@@ -31,7 +30,7 @@
       <Button type="error" v-if="item.state === 1" @click="remove(item.id)">删除订单</Button>
       </Col>
     </Row>
-      <Spin fix v-if="loading"></Spin>
+    <Spin fix v-if="loading"></Spin>
   </div>
 </template>
 
@@ -62,83 +61,85 @@ export default {
     changeOrder(id) {
       changeOrderState(id).then(res => {
         this.$Message.success(res.msg);
-        this.initData();
+				location.reload();
       });
     },
     remove(id) {
       removeOrder(id).then(res => {
         this.$Message.success(res.msg);
-        this.initData();
-      })
+				location.reload();
+      });
     },
     initData() {
       this.loading = true;
       //* 获取所有订单
       getOrder().then(order => {
-        order.data.forEach(orderItem => {
-          async.parallel(
-            {
-              snapShoot: cb => {
-                //* 获取订单快照
-                const tempArr = [];
-                orderItem.snapShoot.forEach(item => {
-                  getSnapShoot(item).then(snapShoot => {
-                    tempArr.push(snapShoot.data);
-                  });
-                });
-                cb(null, tempArr);
-              },
-              address: cb => {
-                //* 获取订单地址
-                getAddress(orderItem.address).then(res => {
-                  //* 格式化订单地址
-                  res.data.map(item => {
-                    item.address.forEach((el, index) => {
-                      switch (index) {
-                        case 0:
-                          getProvincesLabel(el).then(res => {
-                            item.address = res.data.label;
-                          });
-                          break;
-                        case 1:
-                          getCitiesLabel(el).then(res => {
-                            item.address += res.data.label;
-                          });
-                          break;
-                        case 2:
-                          getAreasLabel(el).then(res => {
-                            item.address += res.data.label;
-                          });
-                          break;
-                        case 3:
-                          getStreetsLabel(el).then(res => {
-                            item.address += res.data.label;
-                          });
-                          break;
-                      }
+        async.forEachOf(
+          order.data,
+          orderItem => {
+            async.parallel(
+              {
+                snapShoot: cb => {
+                  //* 获取订单快照
+                  const tempArr = [];
+                  orderItem.snapShoot.forEach(item => {
+                    getSnapShoot(item).then(snapShoot => {
+                      tempArr.push(snapShoot.data);
                     });
-                    cb(null, item);
                   });
+                  cb(null, tempArr);
+                },
+                address: cb => {
+                  //* 获取订单地址
+                  getAddress(orderItem.address).then(res => {
+                    //* 格式化订单地址
+                    res.data.map(item => {
+                      item.address.forEach((el, index) => {
+                        switch (index) {
+                          case 0:
+                            getProvincesLabel(el).then(res => {
+                              item.address = res.data.label;
+                            });
+                            break;
+                          case 1:
+                            getCitiesLabel(el).then(res => {
+                              item.address += res.data.label;
+                            });
+                            break;
+                          case 2:
+                            getAreasLabel(el).then(res => {
+                              item.address += res.data.label;
+                            });
+                            break;
+                          case 3:
+                            getStreetsLabel(el).then(res => {
+                              item.address += res.data.label;
+                            });
+                            break;
+                        }
+                      });
+                      cb(null, item);
+                    });
+                  });
+                }
+              },
+              (err, result) => {
+                this.formData.push({
+                  state: orderItem.state,
+                  createTime: orderItem.createTime,
+                  address: result.address,
+                  snapShoot: result.snapShoot,
+                  id: orderItem._id,
+                  total: orderItem.total
                 });
+                this.loading = false;
               }
-            },
-            (err, result) => {
-              let total = 0;
-              result.snapShoot.forEach(el => {
-                total += el.price * el.count;
-              });
-              this.formData.push({
-                state: orderItem.state,
-                createTime: orderItem.createTime,
-                address: result.address,
-                snapShoot: result.snapShoot,
-                total,
-                id: orderItem._id
-              });
-              this.loading = false;
-            }
-          );
-        });
+            );
+          },
+          (err, orderItemResult) => {
+            this.loading = false;
+          }
+        );
       });
     }
   },
@@ -162,11 +163,13 @@ export default {
   components: {
     expandRow
   },
-  created() { this.initData() }
+  created() {
+    this.initData();
+  }
 };
 </script>
 
-<style>
+<style scoped>
 .order {
   padding: 0 15px 30px;
 }
@@ -174,9 +177,8 @@ export default {
   margin-bottom: 30px;
 }
 .order .ivu-col {
-  border: 1px solid #ddd;
-  border-left: 0;
-  border-right: 0;
+  margin-bottom: 0px;
+  border-top: 1px solid #ddd;
 }
 .order .ivu-col {
   height: 150px;
@@ -188,7 +190,6 @@ export default {
   width: 100%;
   height: auto;
   border: 1px solid #ddd;
-  border-top: 0;
 }
 .order .detail p {
   margin: 6px 0;

@@ -128,7 +128,7 @@ export default {
   border-bottom: 2px solid orange;
 }
 </style>
-<style>
+<style scoped>
 .listimg {
   width: 139px;
   height: 117px;

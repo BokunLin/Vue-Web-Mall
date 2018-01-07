@@ -240,11 +240,13 @@ export default {
   },
   methods: {
     generated(address) {
+      let total = 0;
       const snapShoot = this.product.map(item => {
         const { count, product: { name, price, imgs: [img] } } = item;
+        total += count * price;
         return { count, name, price, img };
       });
-      subOrder({ address, snapShoot }).then(res => {
+      subOrder({ address, snapShoot, total }).then(res => {
         this.$Message.success(res.msg);
         this.$router.push("/order");
       });

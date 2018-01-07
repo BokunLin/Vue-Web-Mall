@@ -43,7 +43,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   .state{
     color: orange;
   }

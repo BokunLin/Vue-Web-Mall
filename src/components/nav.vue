@@ -14,7 +14,7 @@
         </ul>
         </Col>
         <Col push="8" :span="1" class="car">
-          <Icon type="ios-cart" @click.native="goCar"></Icon>
+          <Icon type="ios-cart" @click.native="goCar" style="cursor: pointer;"></Icon>
         </Col>
       </Row>
     </section>
@@ -88,7 +88,6 @@ export default {
 .car {
   line-height: 60px;
   font-size: 20px;
-  cursor: pointer;
   float: right;
   margin-left: 10px;
 }
