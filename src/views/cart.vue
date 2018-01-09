@@ -58,7 +58,8 @@ import {
   getCitiesLabel,
   getAreasLabel,
   getStreetsLabel,
-  subOrder
+  subOrder,
+  addToCar
 } from "@/api/index";
 
 export default {
@@ -101,8 +102,8 @@ export default {
                   on: {
                     click: () => {
                       if (params.row.count > 0) {
-                        params.row.count--;
-                        this.totalMoney -= params.row.product.price;
+                        this.product[params.index].count--;
+                        this.updateCap(params.index);
                       }
                     }
                   }
@@ -116,6 +117,7 @@ export default {
                 ]
               ),
               h("Input", {
+                class: "countInput",
                 props: {
                   size: "small",
                   value: params.row.count
@@ -123,9 +125,7 @@ export default {
                 style: "width: 50px",
                 on: {
                   input: event => {
-                    this.totalMoney +=
-                      (event - params.row.count) * params.row.product.price;
-                    params.row.count = event;
+                    this.unShake(params.index, event);
                   }
                 }
               }),
@@ -138,8 +138,8 @@ export default {
                   },
                   on: {
                     click: () => {
-                      params.row.count++;
-                      this.totalMoney += params.row.product.price;
+                      this.product[params.index].count++;
+                      this.updateCap(params.index);
                     }
                   }
                 },
@@ -215,22 +215,25 @@ export default {
             )
         }
       ],
+      timer: null,
+      uploadCar: [],
       loading: false,
       product: [],
       totalMoney: 0
     };
   },
-  watch: {
-    product: {
-      deep: true,
-      handler(val) {
-        this.updateTotal(val);
-      }
-    }
-  },
   filters: {
     formatMoney(val) {
       return `￥${(val / 100).toFixed(2)}`;
+    }
+  },
+  watch: {
+    product: {
+      deep: true,
+      handler() {
+        this.updateTotal();
+        //* 截流改变购物车
+      }
     }
   },
   components: {
@@ -239,6 +242,23 @@ export default {
     Navigation
   },
   methods: {
+    unShake(i, e) {
+      clearTimeout(this.timer); // 清除未执行的代码，重置回初始化状态
+      this.timer = setTimeout(() => {
+        this.totalMoney += e * this.product[i].product.price;
+        this.product[i].count = e;
+      }, 500);
+      this.updateCap(i);
+    },
+    updateCap(i) {
+      clearTimeout(this.uploadCar[i]);
+      this.uploadCar[i] = setTimeout(() => {
+        addToCar(
+          this.product[i].product._id,
+          this.product[i].count
+        );
+      }, 2000);
+    },
     generated(address) {
       let total = 0;
       const snapShoot = this.product.map(item => {
@@ -251,9 +271,9 @@ export default {
         this.$router.push("/order");
       });
     },
-    updateTotal(val) {
+    updateTotal() {
       let num = 0;
-      val.forEach(el => {
+      this.product.forEach(el => {
         num += el.count * el.product.price;
       });
       this.totalMoney = num;
@@ -263,15 +283,6 @@ export default {
         this.$Message.success(res.msg);
         this.initData();
       });
-    },
-    plus() {
-      this.product.count++;
-    },
-    minus() {
-      if (this.product.count == 0) {
-        return;
-      }
-      this.product.count--;
     },
     initData() {
       this.loading = true;
@@ -324,7 +335,7 @@ export default {
 
 <style scoped>
 .detail-mes {
-  width: 1000px;
+  width: 1190px;
   height: 100px;
   margin: 0px auto;
   display: flex;
@@ -335,7 +346,6 @@ export default {
 }
 .detail-content {
   margin-right: 86px;
-  width: 120px;
   height: 90px;
   display: flex;
   flex-direction: row;
@@ -355,7 +365,7 @@ export default {
   margin: 7px 0;
 }
 .last-current {
-  width: 1000px;
+  width: 1190px;
   margin: 20px auto;
   display: flex;
   flex-direction: row;
@@ -364,7 +374,6 @@ export default {
 }
 .last-contain {
   margin-right: 50px;
-  width: 150px;
   height: 50px;
   display: flex;
   justify-content: space-around;
@@ -384,6 +393,7 @@ export default {
   border: none;
   color: white;
   font-size: 16px;
+  float: right;
   background-color: black;
   margin-top: 20px;
 }

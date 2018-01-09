@@ -5,11 +5,6 @@
     <section class="container">
       <section class="content">
         <p class="title">我的订单</p>
-        <div class="state-list">
-          <span type="text" class="status" :class="{active:istrue === 'order'}" @click="clickone()">全部订单</span>
-          <span type="text" class="status" :class="{active:istrue === 'return'}" @click="clicktwo()">待收货</span>
-          <span type="text" class="status" :class="{active:istrue === 'complate'}" @click="clickthree()">已完成</span>
-        </div>
         <Itable class="Itable"></Itable>
       </section>
       <div class="backtop">
@@ -32,17 +27,6 @@ export default {
     return {
       istrue: "order"
     };
-  },
-  methods: {
-    clickone() {
-      this.istrue = "order";
-    },
-    clicktwo() {
-      this.istrue = "return";
-    },
-    clickthree() {
-      this.istrue = "complate";
-    }
   },
   components: {
     top,

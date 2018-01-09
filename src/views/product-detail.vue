@@ -72,7 +72,11 @@ export default {
         this.$store.dispatch('changeLogin', true);
       } else {
         addToCar(this.product._id).then(res => {
-          this.$Message.success(res.msg);
+          if (res.msg === '更改数量成功') {
+            this.$Message.error('购物车中已有该商品');
+          } else {
+            this.$Message.success(res.msg);
+          }
         });
       }
     }
