@@ -21,15 +21,16 @@
         <Col :span="3" class="textCenter borderR">{{product | total}}</Col>
       </div>
       <Col class="detail">
-      <p>订单状态：{{item.state | state}}</p>
-      <p>下单时间：{{item.createTime | date}}</p>
-      <p>联系方式：{{item.address.phone}}</p>
-      <p>收货地址：{{item.address.address}}{{item.address.detail}}</p>
-      <p>订单总额：{{item.total | money}}</p>
-      <Button type="success" v-if="item.state === 0" @click="changeOrder(item.id)">确认收货</Button>
-      <Button type="error" v-if="item.state === 1" @click="remove(item.id)">删除订单</Button>
+        <p>订单状态：{{item.state | state}}</p>
+        <p>下单时间：{{item.createTime | date}}</p>
+        <p>联系方式：{{item.address.phone}}</p>
+        <p>收货地址：{{item.address.address}}{{item.address.detail}}</p>
+        <p>订单总额：{{item.total | money}}</p>
+        <Button type="success" v-if="item.state === 0" @click="changeOrder(item.id)">确认收货</Button>
+        <Button type="error" v-if="item.state === 1" @click="remove(item.id)">删除订单</Button>
       </Col>
     </Row>
+    <p class="default" v-if="formData.length === 0">暂无数据</p>
     <Spin fix v-if="loading"></Spin>
   </div>
 </template>
@@ -61,13 +62,13 @@ export default {
     changeOrder(id) {
       changeOrderState(id).then(res => {
         this.$Message.success(res.msg);
-				location.reload();
+        location.reload();
       });
     },
     remove(id) {
       removeOrder(id).then(res => {
         this.$Message.success(res.msg);
-				location.reload();
+        location.reload();
       });
     },
     initData() {
@@ -169,58 +170,62 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss">
 .order {
   padding: 0 15px 30px;
-}
-.order .ivu-row-flex {
-  margin-bottom: 30px;
-}
-.order .ivu-col {
-  margin-bottom: 0px;
-  border-top: 1px solid #ddd;
-}
-.order .ivu-col {
-  height: 150px;
-  line-height: 150px;
-}
-.order .detail {
-  line-height: 1;
-  padding: 10px;
-  width: 100%;
-  height: auto;
-  border: 1px solid #ddd;
-}
-.order .detail p {
-  margin: 6px 0;
-}
-.textCenter {
-  text-align: center;
-}
-p {
-  height: 12px;
-}
-.order img {
-  height: 120px;
-}
-.order .title {
-  margin-bottom: 20px;
-  text-align: center;
-  font-size: 14px;
-  font-weight: bold;
-  background-color: #f5f5f5;
-}
-.order .title .ivu-col {
-  height: 40px;
-  line-height: 40px;
-}
-.noMt {
-  margin: 0;
-}
-.order .borderL {
-  border-left: 1px solid #ddd;
-}
-.order .borderR {
-  border-right: 1px solid #ddd;
+  min-height: 278px;
+  .default {
+    text-align: center;
+  }
+  .ivu-row-flex {
+    margin-bottom: 30px;
+    .ivu-col {
+      height: 150px;
+      line-height: 150px;
+      margin-bottom: 0px;
+      border-top: 1px solid #ddd;
+    }
+    .detail {
+      line-height: 1;
+      padding: 10px;
+      width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      p {
+        margin: 6px 0;
+        height: 12px;
+      }
+    }
+    
+  }
+  .textCenter {
+    text-align: center;
+  }
+  img {
+    height: 120px;
+  }
+  .title {
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    border: 0;
+    height: 40px;
+    background-color: #f5f5f5;
+    .ivu-col {
+      height: 40px;
+      border: 0;
+      line-height: 40px;
+    }
+  }
+  .noMt {
+    margin: 0;
+  }
+  .borderL {
+    border-left: 1px solid #ddd;
+  }
+  .borderR {
+    border-right: 1px solid #ddd;
+  }
 }
 </style>

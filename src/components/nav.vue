@@ -60,6 +60,7 @@ export default {
 <style scoped>
 .nav {
   background-color: #fff;
+	border-bottom: 1px solid #eee;
 }
 .row {
   width: 1200px;
@@ -77,7 +78,6 @@ export default {
   cursor: pointer;
   margin: 10px 10px;
   font-size: 16px;
-  transition: all 0.2s;
   float: left;
   color: #333;
 }

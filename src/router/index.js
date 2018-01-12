@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import index from '@/views/index'
-import detail from  '@/views/product-detail'
+import detail from  '@/views/detail'
 import cart from '@/views/cart'
-import productlist from "@/views/productlist"
+import list from "@/views/list"
 import order from "@/views/order"
 import address from "@/views/address"
 
@@ -33,17 +33,17 @@ const router = new Router({
     {
       path: '/childs',
       name: 'childs',
-      component: productlist
+      component: list
     },
     {
       path: '/men',
       name: 'men',
-      component: productlist
+      component: list
     },
     {
       path: '/women',
       name: 'women',
-      component: productlist
+      component: list
     },
     {
       path:'/order',

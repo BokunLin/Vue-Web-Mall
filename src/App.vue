@@ -13,13 +13,19 @@ export default {
 </script>
 
 <style >
-  #app{
-    min-width: 1200px;
-  }
-  input {
-    outline: none;
-  }
-  .ivu-carousel-arrow.right {
-    text-align: center;
-  }
+body {
+  background-color: #f8f8f8;
+}
+#app{
+  width: 100%;
+  min-width: 1200px;
+  font-family: '微软雅黑';
+  overflow: hidden;
+}
+input {
+  outline: none;
+}
+.ivu-carousel-arrow.right {
+  text-align: center;
+}
 </style>

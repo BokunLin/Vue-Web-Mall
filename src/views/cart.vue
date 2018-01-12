@@ -1,45 +1,37 @@
 <template>
-  <div class="body">
+  <div class="carPage">
     <top></top>
     <Navigation></Navigation>
-    <div class="carDiv">
-      <Spin fix v-if="loading"></Spin>
-      <Table class="carTable" :columns="columns" :data="product"></Table>
+    <div class="container">
+      <div class="car">
+        <h1>购物车</h1>
+        <Table :loading="loading" :columns="columns" :data="product"></Table>
+        <div class="detail">
+          <p>合计
+            <span>{{ totalMoney | formatMoney }}</span>
+          </p>
+          <p>运费
+            <span>￥0.00</span>
+          </p>
+          <p>优惠券
+            <span>无</span>
+          </p>
+        </div>
+        <div class="detail">
+          <p>实付款
+            <span class="large">{{ totalMoney | formatMoney }}</span>
+          </p>
+          <button @click="showAddressModal">结算</button>
+        </div>
+      </div>
     </div>
-    <section class="detail-mes">
-      <ul>
-        <li class="detail-content">
-          <ul class="default">
-            <li>合计:</li>
-            <li>运费:</li>
-          </ul>
-          <ul class="pay-mes">
-            <li>{{totalMoney | formatMoney}}</li>
-            <li>￥0.00</li>
-          </ul>
-        </li>
-      </ul>
-    </section>
-    <section class="last-current">
-      <ul>
-        <li class="last-contain">
-          <ul class="last-default">
-            <li>实付款:</li>
-          </ul>
-          <ul class="last-mes">
-            <li>{{totalMoney | formatMoney}}</li>
-          </ul>
-        </li>
-        <li>
-          <button class="settlement" style="cursor:pointer;" @click="visibel = true">结算</button>
-        </li>
-      </ul>
-    </section>
-    <Modal v-model="visibel" width="80" style="padding: 10px;">
+    <Modal v-model="visibel" width="80">
       <span slot="footer">
         <Button type="primary" @click="$router.push('address')">管理收货地址</Button>
       </span>
-      <Table :data="addressData" :columns="addressColumns"></Table>
+      <div style="padding: 25px 15px 0;">
+        <Table :data="addressData" :columns="addressColumns"></Table>
+      </div>
     </Modal>
     <bottom></bottom>
   </div>
@@ -242,6 +234,13 @@ export default {
     Navigation
   },
   methods: {
+    showAddressModal() {
+      if (this.product.length === 0) {
+        this.$Message.error('请先添加商品到购物车');
+      } else {
+        this.visibel = true;
+      }
+    },
     unShake(i, e) {
       clearTimeout(this.timer); // 清除未执行的代码，重置回初始化状态
       this.timer = setTimeout(() => {
@@ -253,10 +252,7 @@ export default {
     updateCap(i) {
       clearTimeout(this.uploadCar[i]);
       this.uploadCar[i] = setTimeout(() => {
-        addToCar(
-          this.product[i].product._id,
-          this.product[i].count
-        );
+        addToCar(this.product[i].product._id, this.product[i].count);
       }, 2000);
     },
     generated(address) {
@@ -285,6 +281,9 @@ export default {
       });
     },
     initData() {
+      if (!sessionStorage.name) {
+        return this.$store.dispatch('changeLogin', true);
+      }
       this.loading = true;
       getCar().then(res => {
         this.product = [];
@@ -333,79 +332,89 @@ export default {
 };
 </script>
 
-<style scoped>
-.detail-mes {
-  width: 1190px;
-  height: 100px;
-  margin: 0px auto;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-  border-bottom: 1px solid #ccc;
-}
-.detail-content {
-  margin-right: 86px;
-  height: 90px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: flex-start;
-}
-.default {
-  text-align: right;
-  color: #ccc;
-}
-.pay-mes {
-  text-align: left;
-  color: black;
-}
-.pay-mes li,
-.default li {
-  margin: 7px 0;
-}
-.last-current {
-  width: 1190px;
-  margin: 20px auto;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-}
-.last-contain {
-  margin-right: 50px;
-  height: 50px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-.last-default {
-  color: #ccc;
-}
-.last-mes {
-  color: black;
-  font-weight: bold;
-  font-size: 23px;
-}
-.settlement {
-  width: 170px;
-  height: 50px;
-  border: none;
-  color: white;
-  font-size: 16px;
-  float: right;
-  background-color: black;
-  margin-top: 20px;
-}
-</style>
+<style lang="scss">
+.carPage {
 
-<style>
-.carDiv {
-  width: 1190px;
-  margin: 20px auto;
+.container {
+  margin: 0;
+  width: 100%;
+  overflow: hidden;
+  .car {
+    width: 80%;
+    min-width: 1200px;
+    margin: 0 auto;
+    h1 {
+      text-align: center;
+      margin: 30px 0 20px;
+    }
+    .ivu-table-wrapper {
+      border: 0;
+      .ivu-table {
+        &:after {
+          display: none;
+        }
+        th {
+          font-size: 14px;
+          line-height: 50px;
+          height: 50px;
+          text-align: center;
+          background-color: #fff;
+        }
+        td {
+          text-align: center;
+          span {
+            display: inline-block;
+            text-align: left;
+          }
+          padding: 10px;
+        }
+        input {
+          text-align: center;
+        }
+        img {
+          width: 100px;
+        }
+      }
+    }
+    .detail,
+    .sub {
+      line-height: 2;
+      color: #888;
+      border-bottom: 1px solid #eee;
+      text-align: right;
+      padding: 15px;
+      span {
+        font-size: 14px;
+        font-weight: bold;
+        color: #444;
+        display: inline-block;
+        text-align: left;
+        width: 10%;
+        margin-left: 20px;
+      }
+      .large {
+        font-size: 20px;
+        color: #222;
+      }
+      button {
+        margin: 15px 0;
+        border: 0;
+        color: #eee;
+        background-color: #222;
+        font-weight: bold;
+        font-size: 16px;
+        width: 150px;
+        transition: all 0.2s ease-out;
+        cursor: pointer;
+        height: 50px;
+        text-align: center;
+        &:hover {
+          background-color: #111;
+          color: #fff;
+        }
+      }
+    }
+  }
 }
-.carImg {
-  width: 120px;
-  height: 120px;
 }
 </style>

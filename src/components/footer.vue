@@ -1,32 +1,33 @@
 <template>
   <div class="footer">
-    <section class="contain">
-      <div class="bottom-mes">
-        <ul>
-          <li class="left"><img src="/static/images/1995-footer.png"></li>
-          <li class="center">
-            <div class="eamilFollow">
-              <Icon type="ios-email-outline" class="email"></Icon>
-              <input type="text" name="email-inp" class="inp" placeholder="输入邮箱订阅...">
-              <Icon type="arrow-right-c" class="arrow-right"></Icon>
-            </div>
-            <p class="version-mes">&copy; 2018|1995.designed with &hearts; by Wedyon</p>
-          </li>
-          <li class="right">
-            <section class="top">
-              <div v-for="list in icon" class="icon" :key='list.img'>
-                <img :src="list.img">
-              </div>
-            </section>
-            <section class="bottom">
-              <div v-for="mine in logo" class="logo" :key="mine.img">
-                <img :src="mine.img">
-              </div>
-            </section>
-          </li>
-        </ul>
-      </div>
-    </section>
+    <Row class="row" type="flex" :gutter="10">
+      <Col :span="6">
+        <img src="/static/images/1995-footer.png">
+      </Col>
+      <Col :span="12" class="center">
+        <span>
+          <Icon size="26" type="email"></Icon>
+          <input v-model="email" type="text" placeholder="输入邮箱获取订阅..." @keyup.enter="sendEmail">
+          <Icon size="26" type="arrow-right-c" @click.native="sendEmail"></Icon>
+        </span>
+        <h3>&copy;2018 | CapMall Designed with by Wedyon</h3>
+      </Col>
+      <Col :span="6">
+        <div>
+          <div class="icons">
+            <img src="/static/images/wechat.png" alt="">
+            <img src="/static/images/QQ.png" alt="">
+            <img src="/static/images/weibo.png" alt="">
+            <img src="/static/images/facebook.png" alt="">
+          </div>
+          <div class="icons">
+            <img src="/static/images/zhifubao.png" alt="">
+            <img src="/static/images/weixinpay.png" alt="">
+            <img src="/static/images/UnionPay.png" alt="">
+          </div>
+        </div>
+      </Col>
+    </Row>
   </div>
 </template>
 
@@ -34,170 +35,88 @@
 export default {
   data() {
     return {
-      value2: 0,
-      number: 3500,
-      foot: [
-        {
-          img: "/static/images/footer-banner.jpg",
-          alt: "this is a footer banner!"
-        },
-        {
-          img: "/static/images/footer-banner.jpg",
-          alt: "this is a footer banner!"
-        },
-        {
-          img: "/static/images/footer-banner.jpg",
-          alt: "this is a footer banner!"
-        },
-        {
-          img: "/static/images/footer-banner.jpg",
-          alt: "this is a footer banner!"
-        }
-      ],
-      icon: [
-        {
-          img: "/static/images/icon-qq.png"
-        },
-        {
-          img: "/static/images/icon-wechat.png"
-        },
-        {
-          img: "/static/images/icon-weibo.png"
-        },
-        {
-          img: "/static/images/facebook.png"
-        }
-      ],
-      logo: [
-        {
-          img: "/static/images/icon-zhifubao.png"
-        },
-        {
-          img: "/static/images/icon-wechatpay.png"
-        },
-        {
-          img: "/static/images/icon-unionpay.png"
-        }
-      ]
-    };
+      email: ''
+    }
+  },
+  methods: {
+    sendEmail() {
+      if (this.email === '') {
+        this.$Message.error('请输入邮箱');
+      } else {
+        this.email = '';
+        this.$Message.success('订阅成功');
+      }
+    }
   }
 };
 </script>
 
-<style scoped>
-* {
-  margin: 0;
-  padding: 0;
-}
-.contain {
-  width: 100%;
-}
-.content {
-  width: 100%;
-}
-.content img {
-  width: 100%;
-}
-.bottom-mes {
-  background-color: rgb(34, 34, 34);
-  height: 140px;
-}
-.bottom-mes ul {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  height: 100%;
-}
-.bottom-mes ul li {
-  width: 33.3%;
-  height: 100%;
-  border-left: 1px solid rgb(50, 50, 50);
-}
-.inp {
-  height: 40px;
-  width: 100%;
-  font-size: 14px;
-  color: #eee;
-  border-radius: 20px;
-  border: none;
-  background-color: rgb(57, 57, 57);
-  padding-left: 50px;
-}
-.left {
-  clear: both;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.center {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-.version-mes {
-  position: absolute;
-  bottom: 10px;
-  font-size: 18px;
-  color: rgb(76, 76, 76);
-}
-.top {
-  width: 100%;
-  height: 50%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-start;
-}
-.bottom {
-  width: 100%;
-  height: 50%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-start;
-  border-top: 1px solid rgb(50, 50, 50);
-}
-.icon {
-  width: 25%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
-  align-items: center;
-}
-.logo {
-  width: 33.3%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
-  align-items: center;
-}
-.eamilFollow {
-  width: 280px;
-  margin: 0 auto;
+<style lang="scss">
+.footer {
+  border: 1px solid #444;
+  background-color: #222;
   text-align: center;
-  position: relative;
-  top: -20px;
-}
-.email {
-  font-size: 28px !important;
-  color: #747474;
-  position: absolute;
-  font-weight: bold;
-  left: 20px;
-  top: 45%;
-  transform: translateY(-50%);
-}
-.arrow-right {
-  color: #fff;
-  position: absolute;
-  right: 20px;
-  top: 45%;
-  font-size: 24px;
-  transform: translateY(-50%);
+  height: 160px;
+  .row {
+    height: 100%;
+    .center {
+      & > span {  
+        width: 70%;
+        background-color: #333;
+        display: inline-block;
+        margin: 40px 0 30px;
+        padding: 6px 15px;
+        border-radius: 40px;
+        input {
+          margin: 0 5px;
+          width: 85%;
+          vertical-align: super;
+          color: #aaa;
+          font-size: 16px;
+          border: none;
+          background-color: #333;
+        }
+      }
+      h3 {
+        font-size: 16px;
+        color: #666;
+        font-weight: initial;
+      }
+    }
+    .ivu-col {
+      background-color: #222;
+      height: 100%;
+      &:first-child {
+        border-right: 1px solid #444;
+        position: relative;
+        img {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+      &:last-child {
+        &>div {
+          height: 100%;
+          border-left: 1px solid #444;
+        }
+        .icons {
+          display: flex;
+          height: 50%;
+          width: 100%;
+          align-items: center;
+          justify-content: space-around;
+          img {
+            width: 40px;
+            height: 40px;
+          }
+          &:first-child {
+            border-bottom: 1px solid #444;
+          }
+        }
+      }
+    }
+  }
 }
 </style>
