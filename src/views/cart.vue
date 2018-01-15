@@ -71,7 +71,7 @@
             </Row>
           </Col>
           <Col :span="24">
-            <Row v-for="item in addressData">
+            <Row v-for="item in addressData" :key="item._id">
               <Col :sm="12" :xs="24">{{item.address}}{{item.detail}}</Col>
               <Col :sm="4" :xs="24">{{item.phone}}</Col>
               <Col :sm="4" :xs="24">{{item.name}}</Col>

@@ -23,7 +23,7 @@
           </template>
           <template v-else>
             <Dropdown placement="bottom-end" trigger="click">
-              <i-button type="text">
+              <i-button type="text" size="large">
                 {{nick}}&nbsp;
                 <Icon type="arrow-down-b"></Icon>
               </i-button>
@@ -181,8 +181,8 @@ header {
       height: 60px;
       .logo {
         text-align: left;
-        height: 46px;
-        margin-top: 7px;
+        height: 36px;
+        margin-top: 12px;
         img {
           height: 100%;
         }
@@ -193,7 +193,7 @@ header {
           line-height: 40px;
           padding: 0px 20px;
           cursor: pointer;
-          margin: 10px 10px;
+          margin: 7px 10px 10px;
           font-size: 16px;
           float: left;
           color: #333;
