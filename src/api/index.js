@@ -5,7 +5,7 @@ export function signup({
   pw,
   nick
 }) {
-  return axios.post('/api/signup', {
+  return axios.post('/web/signup', {
     name,
     pw,
     nick
@@ -16,18 +16,18 @@ export function login({
   name,
   pw
 }) {
-  return axios.post('/api/login', {
+  return axios.post('/web/login', {
     name,
     pw
   })
 }
 
 export function loginOut() {
-  return axios.get('/api/login');
+  return axios.get('/web/login');
 }
 //帽子轮播
 export function getcap(tags) {
-  return axios.get('/api/getListByName', {
+  return axios.get('/web/getListByName', {
     params: {
       tags
     }
@@ -35,11 +35,11 @@ export function getcap(tags) {
 }
 //主页banner
 export function heightBanner() {
-  return axios.get('/api/banner');
+  return axios.get('/web/banner');
 }
 //详情页传id
 export function postID(id) {
-  return axios.post('/api/Product', {
+  return axios.post('/web/Product', {
     params: {
       id
     }
@@ -47,7 +47,7 @@ export function postID(id) {
 }
 //购物车传数据
 export function add(id, count = 1) {
-  return axios.post('/api/cart', {
+  return axios.post('/web/cart', {
     id,
     count
   })
@@ -55,14 +55,14 @@ export function add(id, count = 1) {
 
 //获取主页中间三个
 export function getNewproduct() {
-  return axios.get('/api/getNewProducts');
+  return axios.get('/web/getNewProducts');
 }
 
 export function getListByTag({
   tags,
   page
 }) {
-  return axios.get('/api/getListByName', {
+  return axios.get('/web/getListByName', {
     params: {
       tags,
       page
@@ -71,11 +71,11 @@ export function getListByTag({
 }
 
 export function getProvinces() {
-  return axios.get('/api/provinces');
+  return axios.get('/web/provinces');
 }
 
 export function getCities(val) {
-  return axios.get('/api/cities', {
+  return axios.get('/web/cities', {
     params: {
       val
     }
@@ -83,7 +83,7 @@ export function getCities(val) {
 }
 
 export function getAreas(val) {
-  return axios.get('/api/areas', {
+  return axios.get('/web/areas', {
     params: {
       val
     }
@@ -91,7 +91,7 @@ export function getAreas(val) {
 }
 
 export function getStreets(val) {
-  return axios.get('/api/streets', {
+  return axios.get('/web/streets', {
     params: {
       val
     }
@@ -99,7 +99,7 @@ export function getStreets(val) {
 }
 
 export function getProvincesLabel(val) {
-  return axios.get('/api/provinces/getLabel', {
+  return axios.get('/web/provinces/getLabel', {
     params: {
       val
     }
@@ -107,7 +107,7 @@ export function getProvincesLabel(val) {
 }
 
 export function getCitiesLabel(val) {
-  return axios.get('/api/cities/getLabel', {
+  return axios.get('/web/cities/getLabel', {
     params: {
       val
     }
@@ -115,7 +115,7 @@ export function getCitiesLabel(val) {
 }
 
 export function getAreasLabel(val) {
-  return axios.get('/api/areas/getLabel', {
+  return axios.get('/web/areas/getLabel', {
     params: {
       val
     }
@@ -123,7 +123,7 @@ export function getAreasLabel(val) {
 }
 
 export function getStreetsLabel(val) {
-  return axios.get('/api/streets/getLabel', {
+  return axios.get('/web/streets/getLabel', {
     params: {
       val
     }
@@ -131,11 +131,11 @@ export function getStreetsLabel(val) {
 }
 
 export function getAddress() {
-  return axios.get('/api/address');
+  return axios.get('/web/address');
 }
 
 export function getAddressById(id) {
-  return axios.get('/api/address/id', {
+  return axios.get('/web/address/id', {
     params: {
       id
     }
@@ -143,25 +143,25 @@ export function getAddressById(id) {
 }
 
 export function subAddress(data) {
-  return axios.post('/api/address', {
+  return axios.post('/web/address', {
     data
   });
 }
 
 export function editAddress(data) {
-  return axios.post('/api/address/edit', {
+  return axios.post('/web/address/edit', {
     data
   });
 }
 
 export function removeAddress(id) {
-  return axios.post('/api/address/remove', {
+  return axios.post('/web/address/remove', {
     id
   });
 }
 
 export function getProduct(id) {
-  return axios.get('/api/getProduct', {
+  return axios.get('/web/getProduct', {
     params: {
       id
     }
@@ -169,18 +169,18 @@ export function getProduct(id) {
 }
 
 export function getCar() {
-  return axios.get('/api/getCar');
+  return axios.get('/web/getCar');
 }
 
 export function addToCar(product, count = 1) {
-  return axios.post('/api/addToCar', {
+  return axios.post('/web/addToCar', {
     product,
     count
   })
 }
 
 export function removeCar(id) {
-  return axios.get('/api/removeCar', {
+  return axios.get('/web/removeCar', {
     params: {
       id
     }
@@ -188,21 +188,21 @@ export function removeCar(id) {
 }
 
 export function subOrder({ snapShoot, address, total }) {
-  return axios.post('/api/order', { snapShoot, address, total })
+  return axios.post('/web/order', { snapShoot, address, total })
 }
 
 export function getOrder() {
-  return axios.get('/api/order');
+  return axios.get('/web/order');
 }
 
 export function getSnapShoot(id) {
-  return axios.get('/api/snapShoot', { params: { id } })
+  return axios.get('/web/snapShoot', { params: { id } })
 }
 
 export function changeOrderState(id) {
-  return axios.post('/api/order/confirm', { id })
+  return axios.post('/web/order/confirm', { id })
 }
 
 export function removeOrder(id) {
-  return axios.post('/api/order/remove', { id })
+  return axios.post('/web/order/remove', { id })
 }
