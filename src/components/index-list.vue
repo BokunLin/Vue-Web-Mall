@@ -1,13 +1,15 @@
 <template>
   <div class="capBannerArea">
-    <Carousel v-model="active" :autoplay="true" :autoplay-speed="3000" dots="none">
-      <CarouselItem class="item" v-for="(item, index) in myArr" :key="index">
-        <div v-for="list in item" :key="list.item" @click="$router.push('/index/detail/' + list._id)">
-          <span class="imgArea">
-            <img :src="list.imgs[0]">
-          </span>
-          <p class="title">{{list.name}}</p>
-          <p class="price">￥{{(list.price/100).toFixed(2)}}</p>
+    <Carousel v-model="active" :autoplay="false" :autoplay-speed="3000" dots="none"  arrow="always">
+      <CarouselItem v-for="(item, index) in myArr" :key="index">
+        <div class="item">
+          <div v-for="product in item" :key="product._id" @click="$router.push('/detail/' + product._id)">
+            <span class="imgArea">
+              <img :src="product.imgs[0]">
+            </span>
+            <p class="title">{{product.name}}</p>
+            <p class="price">￥{{(product.price/100).toFixed(2)}}</p>
+          </div>
         </div>
       </CarouselItem>
     </Carousel>
@@ -25,15 +27,16 @@ export default {
     };
   },
   methods: {},
-
   watch: {
     list(val) {
-      const length = Math.ceil(val.length / 4);
+      //* 每页数量
+      const count = 4;
+      const length = Math.ceil(val.length / count);
       const newArr = [];
-      for (let i = 1; i <= length; i++) {
+      for (let i = 0; i < length; i++) {
         const tempArr = [];
-        for (let j = 0; j <= 3; j++) {
-          tempArr.push(val[i * j]);
+        for (let j = 0; j < 4; j++) {
+          if(val[i * count + j]) tempArr.push(val[i * count + j]);
         }
         newArr.push(tempArr);
       }
@@ -47,8 +50,8 @@ export default {
 <style lang="scss">
 .capBannerArea {
   padding: 0 60px;
-  width: 80%;
-  min-width: 1200px;
+  width: 90%;
+  max-width: 1200px;
   margin: 30px auto;
   &:hover {
     .ivu-carousel-arrow.right,
@@ -63,13 +66,11 @@ export default {
     left: -56px;
   }
   .item {
-    width: 100%;
     display: flex;
     justify-content: center;
     align-content: center;
     & > div {
       width: 25%;
-      height: 300px;
       overflow: hidden;
       line-height: 2;
       text-align: center;
@@ -79,7 +80,6 @@ export default {
         justify-content: center;
         width: 80%;
         margin: 0 auto;
-        min-height: 216px;
         background-color: #fff;
         cursor: pointer;
         img {
@@ -88,7 +88,7 @@ export default {
       }
       .title {
         width: 60%;
-        font-size: 14px;
+        font-size: .22rem;
         color: #000;
         white-space: nowrap;
         margin: 0 auto;
@@ -96,8 +96,32 @@ export default {
         text-overflow: ellipsis;
       }
       .price {
-        font-size: 14px;
+        font-size: .18rem;
         color: #888;
+      }
+    }
+  }
+  @media screen and (max-width: 500px){
+    width: 100%;
+    padding: 0 30px;
+    .ivu-carousel-arrow.right {
+      right: -22px;
+      width: 20px;
+      height: 20px;
+    }
+    .ivu-carousel-arrow.left {
+      left: -22px;
+      width: 20px;
+      height: 20px;
+    }
+    .item {
+      display: block;
+      width: 100%;
+      height: 130px;
+      overflow: hidden;
+      & > div {
+        width: 50%;
+        float: left;
       }
     }
   }

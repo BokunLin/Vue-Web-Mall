@@ -1,44 +1,40 @@
 <template>
-  <div class="body">
-    <top></top>
-    <Inav></Inav>
-    <section class="content">
-      <transition name="fade">
-        <div class="picture">
-            <img :src="banner">
+  <div id="detail" :style="{ 'min-height': `${minHeight}px` }">
+    <Row :gutter="20">
+      <Col :sm="12">
+        <div class="bannerArea">
+          <div class="banner" :style="{ 'transform': `translateX(-${translateX}%)` }">
+            <span v-for="(item, index) in product.imgs" :key="index">
+              <img :src="item">
+            </span>
+          </div>
         </div>
-      </transition>
-      <div class="message">
-        <p class="title">{{product.name}}</p>
-        <p class="price">{{`￥${(product.price / 100).toFixed(2)}`}}</p>
+        <div class="imgs">
+          <span v-for="(item, index) in product.imgs" :key="index" @click="banner = index">
+            <img :src="item">
+          </span>
+        </div>
+      </Col>
+      <Col :sm="12" class="info">
+        <h1>{{product.name}}</h1>
+        <b class="price">{{`￥${(product.price / 100).toFixed(2)}`}}</b>
         <div class="type">
           <RadioGroup type="button" size="large" class="fort">
             <Radio disabled label="均码"></Radio>
           </RadioGroup>
         </div>
-        <div class="summit">
-          <button class="addcart" @click="addCart" style="cursor: pointer">{{summit}}</button>
+        <div class="sub">
+          <button @click="addCart">加入购物车</button>
         </div>
-        <p class="descript">{{product.detail}}</p>
-      </div>
-      <section class="preview">
-        <ul>
-          <li v-for="(item, index) in product.imgs" :key="index" class="imgs" @click="banner = item">
-            <i></i>
-            <img :src="item">
-          </li>
-        </ul>
-      </section>
-    </section>
-    <bottom></bottom>
+        <p class="intro">
+          {{product.detail}}
+        </p>
+      </Col>
+    </Row>
   </div>
 </template>
 
 <script>
-import top from "@/components/top";
-import bottom from "@/components/footer";
-import Inav from "@/components/nav";
-
 import { getProduct, addToCar } from '@/api/index';
 
 export default {
@@ -46,14 +42,11 @@ export default {
     return {
       size: "均码",
       summit: "加入购物车",
-      banner: '',
+      banner: 0,
+      translateX: 0,
+      minHeight: 100,
       product: {}
     };
-  },
-  components: {
-    top,
-    bottom,
-    Inav
   },
   created() {
     getProduct(this.$route.params.id).then(res => {
@@ -62,8 +55,13 @@ export default {
         this.$router.go(-1);
       }
       this.product = res.data;
-      this.banner = this.product.imgs[0];
+      this.banner = 0;
     });
+  },
+  watch: {
+    banner(val) {
+      this.translateX = 100 * val;
+    }
   },
   methods: {
     addCart() {
@@ -80,118 +78,111 @@ export default {
         });
       }
     }
+  },
+  mounted() {
+    this.minHeight = document.getElementById('container').offsetHeight;
   }
 };
 </script>
 
-<style scoped>
-.imgs {
-  cursor: pointer;
-  position: relative;
-}
-.imgs:hover i{
+<style lang='scss'>
+#detail {
+  width: 100%;
+  max-width: 1200px;
   background-color: #fff;
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  opacity: .1;
-  
-}
-.body {
-  background-color: #fafafa;
-  width: 100%;
-  height: auto;
-}
-.content {
-  width: 70%;
-  margin: 40px auto;
-  background-color: #fff;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-}
-.picture {
-  width: 50%;
-  height: 50%;
-}
-.picture img {
-  width: 90%;
-}
-.message {
-  width: 50%;
-  font-family: "微软雅黑";
-  margin-top: 80px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-.title {
-  width: 80%;
-  font-size: 28px;
-}
-.price {
-  color: red;
-  font-size: 19px;
-  text-indent: 1em;
-  margin: 15px 0;
-}
-.type {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  border-top: 1px solid #eee;
-  border-bottom: 1px solid #eee;
-}
-.fort {
-  margin: 20px 0;
-}
-.summit {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  border-bottom: 1px solid #eee;
-}
-.addcart {
-  margin: 30px 0;
-  width: 209px;
-  height: 60px;
-  background-color: black;
-  border: none;
-  color: white;
-}
-.descript {
-  margin-top: 10px;
-  color: #aaa;
-}
-.preview {
-  width: 50%;
-}
-.preview ul {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.preview ul li {
-  width: 33.3%;
-}
-.preview ul li img {
-  width: 90%;
-}
-</style>
-<style scoped>
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active in below version 2.1.8 */ {
-  opacity: 0
+  margin: 0 auto;
+  padding: 50px 20px;
+  .bannerArea {
+    overflow: hidden;
+    .banner {
+      position: relative;
+      white-space: nowrap;
+      transition: transform .2s ease-out;
+      transform: translateX(0);
+      &>span {
+        display: inline-block;
+        padding: 0 40px;
+        img {
+          width: 100%;
+        }
+      }
+    }
+  }
+  .info {
+    h1 {
+      width: 80%;
+      font-size: .4rem;
+    }
+    .price {
+      color: #222;
+      font-size: .35rem;
+      line-height: 2;
+    }
+    .type {
+      padding: 30px 0;
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+    }
+    .sub {
+      padding: 30px 0;
+      border-bottom: 1px solid #ddd;
+      button {
+        border: 0;
+        background-color: #222;
+        font-size: .2rem;
+        padding: 10px 25px;
+        color: #eee;
+        transition: all .3s ease-out;
+        cursor: pointer;
+        &:hover {
+          color: #fff;
+          background-color: #111;
+        }
+      }
+    }
+    p.intro {
+      width: 90%;
+      margin-top: 15px;
+      color: #aaa;
+      font-size: .15rem;
+      line-height: 1.8;
+    }
+  }
+  .imgs {
+    span {
+      display: inline-block;
+      width: 33%;
+      text-align: center;
+      position: relative;
+      cursor: pointer;
+      &:hover {
+        opacity: .6;
+      }
+      img {
+        width: 80%;
+      }
+    }
+  }
+  @media screen and (max-width: 500px){
+    padding: 20px;
+    .info {
+      width: 100%;
+      h1 {
+        width: 100%;
+      }
+    }
+  }
+  .slide-enter-active, .slide-leave-active {
+    transition: transform .3s ease-out;
+  }
+  .slide-enter-to {
+    transform: translateX(0);
+  }
+  .slide-enter {
+    transform: translateX(100%);
+  }
+  .slide-leave-to{
+    transform: translateX(-100%);
+  }
 }
 </style>

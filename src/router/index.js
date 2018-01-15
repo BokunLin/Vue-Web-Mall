@@ -21,7 +21,7 @@ const router = new Router({
     	component:index
     },
     {
-      path:"/index/detail/:id",
+      path:"/detail/:id",
       name:"detail",
       component:detail
     },

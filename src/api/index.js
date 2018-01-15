@@ -134,6 +134,14 @@ export function getAddress() {
   return axios.get('/api/address');
 }
 
+export function getAddressById(id) {
+  return axios.get('/api/address/id', {
+    params: {
+      id
+    }
+  });
+}
+
 export function subAddress(data) {
   return axios.post('/api/address', {
     data

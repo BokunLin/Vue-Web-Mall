@@ -1,7 +1,7 @@
 <template>
   <div class="banner">
-     <Carousel autoplay v-model="active" :auto-speed="3000">
-        <CarouselItem v-for="item in mylist" :key="item.banner" style="cursor: pointer;" @click.native="$router.push('/index/detail/' + item._id)">
+     <Carousel autoplay v-model="active" :auto-speed="3000" arrow="always">
+        <CarouselItem v-for="item in mylist" :key="item.banner" style="cursor: pointer;" @click.native="$router.push('/detail/' + item._id)">
             <div class="bannerBlock">
               <img :src="item.banner" class="bannerImg">
             </div>

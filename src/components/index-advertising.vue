@@ -68,22 +68,22 @@ export default {
 
 <style lang="scss">
 .advertising {
-  width: 80%;
-  min-width: 1200px;
+  width: 100%;
+  max-width: 1200px;
   display: flex;
   justify-content: space-between;
   margin: 30px auto;
-  height: 581px;
+  padding: 0 30px;
+  height: 42vw;
   overflow: hidden;
   .mainAd {
     flex-grow: 0;
     flex-shrink: 0;
-    width: 366px;
-    height: 581px;
+    height: 100%;
     cursor: pointer;
     margin: 0 20px;
     img {
-      width: 100%;
+      height: 100%;
     }
   }
   .item {
@@ -124,12 +124,22 @@ export default {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            width: 100%;
             p {
               color: #eee;
-              font-size: 18px;
-              font-weight: bold;
+              font-size: .35rem;
             }
           }
+        }
+        @media screen and (max-width: 1025px){
+          .map {
+            opacity: 1;
+            .info {
+              p {
+                font-size: .1rem;
+              }
+            }
+          }          
         }
       }
     }

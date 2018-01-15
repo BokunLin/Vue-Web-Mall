@@ -6,7 +6,9 @@ import router from './router'
 import iView from 'iview'
 import store from './store/index'
 import 'iview/dist/styles/iview.css'
+import VueScrollReveal from 'vue-scroll-reveal';
 
+Vue.use(VueScrollReveal);
 
 Vue.use(iView);
 

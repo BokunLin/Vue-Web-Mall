@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">
+  <footer>
     <Row class="row" type="flex" :gutter="10">
       <Col :span="6">
         <img src="/static/images/1995-footer.png">
@@ -28,7 +28,8 @@
         </div>
       </Col>
     </Row>
-  </div>
+    <h3 class="hideXs">&copy;2018 | CapMall Designed with by Wedyon</h3>
+  </footer>
 </template>
 
 <script>
@@ -52,10 +53,11 @@ export default {
 </script>
 
 <style lang="scss">
-.footer {
+footer {
   border: 1px solid #444;
   background-color: #222;
   text-align: center;
+  width: 100%;
   height: 160px;
   .row {
     height: 100%;
@@ -75,6 +77,9 @@ export default {
           font-size: 16px;
           border: none;
           background-color: #333;
+          @media screen and (max-width: 1024px){
+            width: 70%;
+          }
         }
       }
       h3 {
@@ -116,6 +121,22 @@ export default {
           }
         }
       }
+    }
+  }
+  .hideXs {
+    display: none;
+  }
+  @media screen and (max-width: 500px){
+    line-height: 30px;
+    height: 30px;
+    .hideXs {
+      display: block;
+      font-weight: 100;
+      font-size: 14px;
+      color: #aaa;
+    }
+    .row {
+      display: none;
     }
   }
 }
