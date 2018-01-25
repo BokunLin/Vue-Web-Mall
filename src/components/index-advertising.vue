@@ -74,7 +74,7 @@ export default {
   justify-content: space-between;
   margin: 30px auto;
   padding: 0 30px;
-  height: 42vw;
+  height: 11rem;
   overflow: hidden;
   .mainAd {
     flex-grow: 0;
@@ -143,6 +143,15 @@ export default {
         }
       }
     }
+  }
+  @media screen and (max-width: 1023px){
+    height: 7rem;
+  }
+  @media screen and (max-width: 767px){
+    height: 6rem;
+  }
+  @media screen and (max-width: 500px){
+    height: 2.6rem;
   }
 }
 </style>
